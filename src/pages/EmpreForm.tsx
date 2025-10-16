@@ -1,4 +1,9 @@
+
+
 import { useState } from "react";
+import ModalExito from "./../components/ModalExito"; 
+import ModalAlerta from "./../components/ModalAlerta"; 
+
 
 const CATEGORIAS = [
   "Produccion",
@@ -15,7 +20,6 @@ const CATEGORIAS = [
   "VideoJuegos",
 ];
 
-
 const primaryColorClass = "bg-slate-800 hover:bg-slate-700";
 const primaryTextColorClass = "text-slate-800";
 const primaryRingClass = "focus:ring-slate-800";
@@ -27,42 +31,43 @@ const darkGreenHoverClass = "hover:bg-green-700";
 
 const inputClasses = `w-full p-3 border border-gray-300 rounded-md ${primaryRingClass} focus:border-slate-800 focus:ring-1 focus:ring-slate-800 outline-none transition duration-150 ease-in-out placeholder-gray-500 text-gray-800`;
 
+
+
 export default function EmprendimientoForm() {
   const [fase, setFase] = useState(1);
+
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  
   const [formData, setFormData] = useState({
     nombre: "",
-    rubro: "", 
+    rubro: "",
     descripcion: "",
     objetivo: "",
     producto: "",
     publico: "",
     modelo: "",
-    monto: "", 
+    monto: "",
     uso: "",
-    rentabilidad: "", 
+    rentabilidad: "",
     plazo: "",
-    minimo: "", 
-    
+    minimo: "",
     panelVentas: "",
     reportes: "",
-
     email: "",
     ubicacion: "",
   });
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
 
     if (type === "number") {
-     
-      const numericValue = value.replace(/[^0-9.]/g, ''); 
+      const numericValue = value.replace(/[^0-9.]/g, '');
       setFormData({ ...formData, [name]: numericValue });
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
-
 
   const validarCampos = () => {
     const fasesRequeridas: Record<number, string[]> = {
@@ -79,7 +84,6 @@ export default function EmprendimientoForm() {
 
     const todosLlenos = requeridos.every((campo) => {
       const valor = formData[campo as keyof typeof formData];
-
       return valor !== null && valor.toString().trim() !== "";
     });
 
@@ -88,13 +92,22 @@ export default function EmprendimientoForm() {
 
   const siguiente = () => {
     if (!validarCampos()) {
-      alert("⚠️ Por favor, completa todos los campos obligatorios antes de continuar. Los campos requeridos están marcados con un *.");
+      setShowErrorModal(true); 
       return;
     }
     setFase(fase + 1);
   };
 
   const anterior = () => setFase(fase - 1);
+
+  const handleSubmit = () => {
+    if (!validarCampos()) {
+      setShowErrorModal(true); 
+      return;
+    }
+   
+    setShowSuccessModal(true);
+  };
 
   const fases = [
     "Información básica",
@@ -104,17 +117,20 @@ export default function EmprendimientoForm() {
     "Verificación",
   ];
 
-  
   const primaryButtonClass = `${primaryColorClass} text-white px-6 py-2 rounded-lg font-semibold transition duration-200 ease-in-out tracking-wide`;
-
   const secondaryButtonClass = "bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold transition duration-200 ease-in-out";
-
   const publishButtonClass = `${darkGreenClass} ${darkGreenHoverClass} text-white px-6 py-2 rounded-lg font-semibold ml-auto transition duration-200 ease-in-out tracking-wide`;
 
   return (
     <div className="flex justify-center mt-10 p-4">
+      
+    
+      <ModalExito isOpen={showSuccessModal} onClose={() => setShowSuccessModal(false)} />
+      <ModalAlerta isOpen={showErrorModal} onClose={() => setShowErrorModal(false)} />
+
       <div className="w-full max-w-4xl bg-white rounded-xl border border-gray-200 p-8 md:p-12 shadow-lg">
         
+      
         <div className="flex justify-between mb-10 pb-4">
           {fases.map((label, index) => {
             const num = index + 1;
@@ -122,24 +138,19 @@ export default function EmprendimientoForm() {
             const completado = fase > num;
             return (
               <div key={num} className="flex flex-col items-center w-full relative">
-         
                 <div
                   className={`w-10 h-10 flex items-center justify-center rounded-full border-2 font-medium transition-all duration-300
-                  ${activo ? `${primaryColorClass} text-white border-slate-800` : completado ? `bg-green-800 text-white border-green-800` : "bg-white text-gray-500 border-gray-400"}`}
+                  ${activo ? `${primaryColorClass} text-white border-slate-800` : completado ? `${darkGreenClass} text-white` : "bg-white text-gray-500 border-gray-400"}`}
                 >
-                
                   {completado ? '✓' : num} 
                 </div>
-         
                 <p className={`text-xs mt-2 text-center whitespace-nowrap ${activo ? `${primaryTextColorClass} font-semibold` : "text-gray-600"}`}>
                   {label}
                 </p>
-               
                 {num < fases.length && (
                   <div
                     className={`absolute top-5 left-[50%] -translate-x-1/2 w-[100%] h-0.5 transition-all duration-300 transform -z-10
                     ${completado ? "bg-green-800" : "bg-gray-300"}`}
-                   
                     style={{ left: 'calc(50% + 20px)', width: 'calc(100% - 40px)' }}
                   ></div>
                 )}
@@ -150,7 +161,6 @@ export default function EmprendimientoForm() {
 
         <hr className="mb-8 border-gray-100" />
         
-    
         <h2 className={`text-2xl font-bold mb-8 text-center ${primaryTextColorClass}`}>
           {fase === 1 && "Información Básica del Proyecto"}
           {fase === 2 && "Detalle del Modelo de Negocio"}
@@ -160,7 +170,7 @@ export default function EmprendimientoForm() {
         </h2>
 
         <form onSubmit={(e) => e.preventDefault()}>
-          {/* === FASE 1 === */}
+          {/* FASE 1 */}
           {fase === 1 && (
             <div className="space-y-6 animate-fadeIn">
               <input
@@ -170,13 +180,11 @@ export default function EmprendimientoForm() {
                 placeholder="Nombre del emprendimiento o Startup *"
                 className={inputClasses}
               />
-              
-             
               <select
                 name="rubro"
                 value={formData.rubro}
                 onChange={handleChange}
-                className={`${inputClasses} appearance-none cursor-pointer`} 
+                className={`${inputClasses} appearance-none cursor-pointer`}
               >
                 <option value="" disabled hidden>Selecciona una Categoría / Rubro *</option>
                 {CATEGORIAS.map((categoria) => (
@@ -185,7 +193,6 @@ export default function EmprendimientoForm() {
                   </option>
                 ))}
               </select>
-
               <textarea
                 name="descripcion"
                 value={formData.descripcion}
@@ -201,7 +208,7 @@ export default function EmprendimientoForm() {
             </div>
           )}
 
-        
+          {/* FASE 2 */}
           {fase === 2 && (
             <div className="space-y-6 animate-fadeIn">
               <textarea
@@ -235,15 +242,15 @@ export default function EmprendimientoForm() {
             </div>
           )}
 
+          {/* FASE 3 */}
           {fase === 3 && (
             <div className="space-y-6 animate-fadeIn">
-            
               <input
                 name="monto"
                 value={formData.monto}
                 onChange={handleChange}
                 type="number"
-                inputMode="numeric" 
+                inputMode="numeric"
                 placeholder="Monto total solicitado para la ronda de inversión ($) *"
                 className={inputClasses}
               />
@@ -254,7 +261,6 @@ export default function EmprendimientoForm() {
                 placeholder="Uso detallado del capital (Ej: 50% Marketing, 30% Desarrollo) *"
                 className={inputClasses}
               />
-            
               <input
                 name="rentabilidad"
                 value={formData.rentabilidad}
@@ -271,7 +277,6 @@ export default function EmprendimientoForm() {
                 placeholder="Plazo estimado de retorno o salida de la inversión *"
                 className={inputClasses}
               />
-              
               <input
                 name="minimo"
                 value={formData.minimo}
@@ -284,18 +289,16 @@ export default function EmprendimientoForm() {
             </div>
           )}
 
-          {/* === FASE 4 === */}
+          {/* FASE 4 */}
           {fase === 4 && (
             <div className="space-y-6 animate-fadeIn">
               <p className="text-gray-600 italic border-l-4 border-slate-300 pl-3 py-1 bg-gray-50">
                 Esta fase es opcional. Proveer más transparencia aumenta la confianza de los inversores.
               </p>
-
               <div className="pt-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Subir Plan de Negocios / Pitch Deck (Opcional)</label>
                 <input type="file" className={`${inputClasses} cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-slate-800 hover:file:bg-gray-200`} />
               </div>
-
               <input
                 type="url"
                 name="panelVentas"
@@ -314,7 +317,7 @@ export default function EmprendimientoForm() {
             </div>
           )}
 
-          {/* === FASE 5 === */}
+          {/* FASE 5 */}
           {fase === 5 && (
             <div className="space-y-6 animate-fadeIn">
               <input
@@ -364,7 +367,7 @@ export default function EmprendimientoForm() {
               Siguiente Paso {fase + 1} / 5
             </button>
           ) : (
-            <button className={publishButtonClass} onClick={() => alert("¡Emprendimiento Publicado! (Simulación)")}>
+            <button className={publishButtonClass} onClick={handleSubmit}>
               Publicar Emprendimiento
             </button>
           )}
