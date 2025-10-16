@@ -3,6 +3,7 @@ import { Home } from './pages/Home'
 import { Login } from './pages/Login'
 import { Register } from './pages/Register'
 import { NotFound } from './pages/NotFound'
+import EmprendimientoForm from './pages/EmpreForm'
 
 type RouteConfig = {
   path: string
@@ -13,6 +14,8 @@ const routes: RouteConfig[] = [
   { path: '/', element: <Home /> },
   { path: '/login', element: <Login /> },
   { path: '/register', element: <Register /> },
+  { path: '/emprendimientoForm', element: <EmprendimientoForm /> },
+
 ]
 
 function getHashPath() {

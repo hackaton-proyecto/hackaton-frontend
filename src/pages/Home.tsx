@@ -29,7 +29,7 @@ export function Home() {
                 </button>
                 <button
                   className="rounded-md bg-[oklch(27.9%_0.041_260.031)] px-4 py-2 text-sm font-semibold text-white shadow hover:bg-[oklch(32%_0.045_260.031)] transition-colors"
-                  onClick={() => navigate('/login')}
+                  onClick={() => navigate('/emprendimientoForm')}
                 >
                   Ya tengo cuenta
                 </button>

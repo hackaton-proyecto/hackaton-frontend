@@ -13,7 +13,7 @@ export function UsersChart({ title = 'Usuarios (demo)' }: UsersChartProps) {
     const ctx = canvasRef.current?.getContext('2d')
     if (!ctx) return
 
-    // Demo data: replace with real data when backend is ready
+    
     const data = {
       labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
       datasets: [
