@@ -5,6 +5,8 @@ import { Register } from './pages/Register'
 import { NotFound } from './pages/NotFound'
 import EmprendimientoForm from './pages/EmpreForm'
 import PerfilPage from './pages/Profile'
+import FinancialOverview from './pages/AdminEmpre'
+
 
 type RouteConfig = {
   path: string
@@ -16,7 +18,10 @@ const routes: RouteConfig[] = [
   { path: '/login', element: <Login /> },
   { path: '/register', element: <Register /> },
   { path: '/emprendimientoForm', element: <EmprendimientoForm /> },
-    { path: '/Profile', element: <PerfilPage/> },
+  { path: '/Profile', element: <PerfilPage /> },
+  { path: '/AdminEmpre', element: <FinancialOverview /> },
+
+
 
 
 ]
