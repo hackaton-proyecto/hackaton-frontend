@@ -1,0 +1,14 @@
+html, body, #root {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
+    
+.register-bg {
+  min-height: 100%;
+  background-color: var(--register-bg-color, #ffffff);
+  background-image: var(--register-bg-image, none);
+  background-size: cover;
+  background-position: center;
+}
