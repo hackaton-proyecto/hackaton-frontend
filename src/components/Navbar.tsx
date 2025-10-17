@@ -22,7 +22,7 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <button
             className="text-lg font-semibold text-gray-900 hover:text-blue-900"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/home')}
             aria-label="Go to home"
           >
             camelCase
@@ -49,14 +49,14 @@ export function Navbar() {
 
           {user && (
             <>
-              {/* === BOTÓN MEJORADO === */}
+     
               <button
                 onClick={() => navigate('/chatlist')}
                 className="relative grid h-10 w-10 place-items-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition-all duration-200 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 hover:shadow-md"
                 aria-label="Ver conversaciones"
                 title="Conversaciones"
               >
-                {/* Ícono de chat elegante */}
+               
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -66,11 +66,10 @@ export function Navbar() {
                   <path d="M7.5 3.75A4.5 4.5 0 003 8.25v7.5A4.5 4.5 0 007.5 20.25h.75v2.25a.75.75 0 001.28.53L13.06 20.25H16.5A4.5 4.5 0 0021 15.75v-7.5A4.5 4.5 0 0016.5 3.75h-9z" />
                 </svg>
 
-                {/* Indicador de mensajes nuevos (opcional) */}
+          
                 <span className="absolute top-1 right-1 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white" />
               </button>
 
-              {/* === MENÚ DE PERFIL === */}
               <div className="relative" ref={menuRef}>
                 <button
                   className="h-9 w-9 overflow-hidden rounded-full ring-1 ring-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-700"
@@ -114,7 +113,7 @@ export function Navbar() {
                       onClick={() => {
                         setOpen(false)
                         logout()
-                        navigate('/')
+                        navigate('/home')
                       }}
                     >
                       Cerrar sesión

@@ -15,7 +15,7 @@ export function FloatingActionButton() {
         right-8        // A 8 unidades del borde derecho
         w-16           // Ancho de 16 unidades (4rem o 64px)
         h-16           // Alto de 16 unidades
-        bg-blue-600    // Color de fondo azul
+        bg-blue-900   // Color de fondo azul
         rounded-full   // Bordes completamente redondeados para formar un círculo
         text-white     // Color del ícono
         flex           // Contenedor flex para centrar el ícono
@@ -28,7 +28,7 @@ export function FloatingActionButton() {
         focus:ring-2     // Añade un anillo de foco
         focus:ring-blue-500
         focus:ring-offset-2
-        focus:ring-offset-gray-900
+        focus:ring-offset-gray-950
       "
     >
     

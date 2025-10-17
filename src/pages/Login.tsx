@@ -54,7 +54,7 @@ export function Login() {
     setLoading(true)
     try {
       await login(email, password)
-      let dest = '/'
+      let dest = '/home'
       try {
         const saved = localStorage.getItem('post_login_redirect')
         if (saved) {

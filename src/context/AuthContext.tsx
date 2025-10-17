@@ -20,16 +20,26 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 const STORAGE_KEY = 'auth_user'
+const isDev = import.meta.env.DEV
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [initialized, setInitialized] = useState(false)
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY)
-      if (raw) setUser(JSON.parse(raw))
-    } catch {
+    // En desarrollo no restauramos sesi贸n desde localStorage
+    if (!isDev) {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY)
+        if (raw) setUser(JSON.parse(raw))
+      } catch {
+        setUser(null)
+      }
+    } else {
+      // Limpieza defensiva por si qued贸 alguna sesi贸n almacenada
+      try {
+        localStorage.removeItem(STORAGE_KEY)
+      } catch {}
       setUser(null)
     }
     setInitialized(true)
@@ -37,6 +47,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const saveUser = (u: User | null) => {
     setUser(u)
+    // En desarrollo no persistimos sesi贸n para evitar entrar logueado al arrancar
+    if (isDev) {
+      try {
+        if (!u) localStorage.removeItem(STORAGE_KEY)
+      } catch {}
+      return
+    }
     if (u) localStorage.setItem(STORAGE_KEY, JSON.stringify(u))
     else localStorage.removeItem(STORAGE_KEY)
   }
