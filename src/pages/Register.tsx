@@ -3,6 +3,8 @@ import type { FormEvent, InputHTMLAttributes } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { Container } from '../components/Container'
 import { navigate } from '../router'
+import { motion, AnimatePresence } from 'framer-motion'
+
 interface FormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   id: string
   label: string
@@ -64,17 +66,34 @@ export function Register() {
   return (
     <section className="register-bg min-h-screen">
       <Container className="flex items-center justify-center py-12 sm:py-16">
-        <div className="mx-auto w-full max-w-md rounded-2xl border border-blue-900/20 bg-white/95 p-8 shadow-2xl shadow-blue-900/20 backdrop-blur-sm">
-          <div className="text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="mx-auto w-full max-w-md rounded-2xl border border-blue-900/20 bg-white/95 p-8 shadow-2xl shadow-blue-900/20 backdrop-blur-sm"
+        >
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+          >
             <h2 className="text-3xl font-bold tracking-tight text-gray-900">
               Crear una cuenta
             </h2>
             <p className="mt-2 text-sm text-gray-600">
               Únete a nuestra comunidad de innovadores.
             </p>
-          </div>
+          </motion.div>
 
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit} noValidate>
+          <motion.form
+            className="mt-8 space-y-6"
+            onSubmit={handleSubmit}
+            noValidate
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.2 }}
+          >
             <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
               <FormField
                 id="name"
@@ -140,11 +159,20 @@ export function Register() {
               autoComplete="new-password"
             />
 
-            {error && (
-              <p className="rounded-md border border-red-300 bg-red-50 p-3 text-center text-sm font-medium text-red-700">
-                {error}
-              </p>
-            )}
+            <AnimatePresence>
+              {error && (
+                <motion.p
+                  key="error"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="rounded-md border border-red-300 bg-red-50 p-3 text-center text-sm font-medium text-red-700"
+                >
+                  {error}
+                </motion.p>
+              )}
+            </AnimatePresence>
 
             <div>
               <button
@@ -155,9 +183,14 @@ export function Register() {
                 {loading ? 'Registrando...' : 'Registrarme'}
               </button>
             </div>
-          </form>
+          </motion.form>
 
-          <p className="mt-8 text-center text-sm text-gray-600">
+          <motion.p
+            className="mt-8 text-center text-sm text-gray-600"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+          >
             ¿Ya tienes una cuenta?{' '}
             <button
               onClick={() => navigate('/login')}
@@ -165,9 +198,9 @@ export function Register() {
             >
               Inicia sesión aquí
             </button>
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </Container>
     </section>
   )
-} 
+}
