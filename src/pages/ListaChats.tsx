@@ -1,56 +1,56 @@
-import { Container } from '../components/Container'
-import { navigate } from '../router'
-import { Navbar } from '../components/Navbar'
-import { Footer } from '../components/Footer'
+import { Container } from "../components/Container";
+import { navigate } from "../router";
+import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
 
 type ChatSummary = {
-  projectId: string
-  projectName: string
-  lastMessage: string
-  timestamp: string
-  unreadCount: number
-  avatarInitial: string
-}
+  projectId: string;
+  projectName: string;
+  lastMessage: string;
+  timestamp: string;
+  unreadCount: number;
+  avatarInitial: string;
+};
 
 const demoChats: ChatSummary[] = [
   {
-    projectId: 'eco-game-studios',
-    projectName: 'IA de alexis',
-    lastMessage: '¡Hola! Claro, gracias por tu interés...',
-    timestamp: '10:32 AM',
+    projectId: "chatbot",
+    projectName: "Chatbot",
+    lastMessage: "¡Hola! Soy tu asistente virtual, ¿en qué puedo ayudarte hoy?",
+    timestamp: "10:32 AM",
     unreadCount: 0,
-    avatarInitial: 'E',
+    avatarInitial: "C",
   },
   {
-    projectId: 'tech-innovators',
-    projectName: 'Tech Innovators',
-    lastMessage: 'Perfecto, envíanos la propuesta y la revisamos.',
-    timestamp: 'Ayer',
+    projectId: "tech-innovators",
+    projectName: "Tech Innovators",
+    lastMessage: "Perfecto, envíanos la propuesta y la revisamos.",
+    timestamp: "Ayer",
     unreadCount: 2,
-    avatarInitial: 'T',
+    avatarInitial: "T",
   },
   {
-    projectId: 'arte-digital-creativo',
-    projectName: 'Arte Digital Creativo',
-    lastMessage: '¿Podríamos agendar una llamada para mañana?',
-    timestamp: '14/10',
+    projectId: "arte-digital-creativo",
+    projectName: "Arte Digital Creativo",
+    lastMessage: "¿Podríamos agendar una llamada para mañana?",
+    timestamp: "14/10",
     unreadCount: 0,
-    avatarInitial: 'A',
+    avatarInitial: "A",
   },
   {
-    projectId: 'salud-bienestar-app',
-    projectName: 'Salud & Bienestar App',
-    lastMessage: 'Recibido, muchas gracias.',
-    timestamp: '12/10',
+    projectId: "salud-bienestar-app",
+    projectName: "Salud & Bienestar App",
+    lastMessage: "Recibido, muchas gracias.",
+    timestamp: "12/10",
     unreadCount: 0,
-    avatarInitial: 'S',
+    avatarInitial: "S",
   },
-]
+];
 
 export function ChatList() {
   const handleChatSelect = (projectId: string) => {
-    navigate(`/chat?projectId=${projectId}`)
-  }
+    navigate(`/chat?projectId=${projectId}`);
+  };
 
   return (
     <>
@@ -78,12 +78,18 @@ export function ChatList() {
                   </div>
 
                   <div className="flex-grow overflow-hidden">
-                    <h2 className="font-semibold text-gray-800 truncate">{chat.projectName}</h2>
-                    <p className="text-sm text-gray-500 truncate">{chat.lastMessage}</p>
+                    <h2 className="font-semibold text-gray-800 truncate">
+                      {chat.projectName}
+                    </h2>
+                    <p className="text-sm text-gray-500 truncate">
+                      {chat.lastMessage}
+                    </p>
                   </div>
 
                   <div className="flex shrink-0 flex-col items-end gap-1.5 self-start">
-                    <time className="text-xs font-medium text-gray-500">{chat.timestamp}</time>
+                    <time className="text-xs font-medium text-gray-500">
+                      {chat.timestamp}
+                    </time>
                     {chat.unreadCount > 0 && (
                       <span className="grid h-5 w-5 place-items-center rounded-full bg-gray-800 text-xs font-bold text-white">
                         {chat.unreadCount}
@@ -98,7 +104,7 @@ export function ChatList() {
       </div>
       <Footer />
     </>
-  )
+  );
 }
 
-export default ChatList
+export default ChatList;
