@@ -5,6 +5,7 @@ type User = { email: string; name?: string; lastName?: string; role?: Role }
 
 type AuthContextType = {
   user: User | null
+  initialized: boolean
   login: (email: string, password: string) => Promise<void>
   register: (
     name: string,
@@ -22,6 +23,7 @@ const STORAGE_KEY = 'auth_user'
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
+  const [initialized, setInitialized] = useState(false)
 
   useEffect(() => {
     try {
@@ -30,6 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch {
       setUser(null)
     }
+    setInitialized(true)
   }, [])
 
   const saveUser = (u: User | null) => {
@@ -39,8 +42,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const login = async (email: string, _password: string) => {
-    // Generic placeholder: accept any credentials and "log in"
-    // If you later persist users, you can fetch the stored name here.
     saveUser({ email })
   }
 
@@ -51,13 +52,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     email: string,
     _password: string
   ) => {
-    // Placeholder local register: persist minimal profile locally
     saveUser({ email, name, lastName, role })
   }
 
   const logout = () => saveUser(null)
 
-  const value = useMemo(() => ({ user, login, register, logout }), [user])
+  const value = useMemo(() => ({ user, initialized, login, register, logout }), [user, initialized])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

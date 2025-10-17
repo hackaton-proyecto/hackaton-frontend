@@ -1,14 +1,10 @@
-
-
-
 import Modal from "./Modal";
-
 
 const darkGreenClass = "bg-green-800 hover:bg-green-700";
 
 interface ModalExitoProps {
-    isOpen: boolean;
-    onClose: () => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export default function ModalExito({ isOpen, onClose }: ModalExitoProps) {
@@ -24,3 +20,4 @@ export default function ModalExito({ isOpen, onClose }: ModalExitoProps) {
     />
   );
 }
+

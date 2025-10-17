@@ -1,9 +1,8 @@
-
-
-import { useState } from "react";
-import ModalExito from "./../components/ModalExito"; 
-import ModalAlerta from "./../components/ModalAlerta"; 
-
+import { useEffect, useState } from "react";
+import type React from "react";
+import { navigate } from "../router";
+import ModalExito from "../components/ModalExito";
+import ModalAlerta from "../components/ModalAlerta";
 
 const CATEGORIAS = [
   "Produccion",
@@ -56,6 +55,7 @@ export default function EmprendimientoForm() {
     reportes: "",
     email: "",
     ubicacion: "",
+    imagenes: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -92,7 +92,7 @@ export default function EmprendimientoForm() {
 
   const siguiente = () => {
     if (!validarCampos()) {
-      setShowErrorModal(true); 
+      alert("⚠️ Por favor, completa todos los campos obligatorios antes de continuar. Los campos requeridos están marcados con un *.");
       return;
     }
     setFase(fase + 1);
@@ -120,6 +120,55 @@ export default function EmprendimientoForm() {
   const primaryButtonClass = `${primaryColorClass} text-white px-6 py-2 rounded-lg font-semibold transition duration-200 ease-in-out tracking-wide`;
   const secondaryButtonClass = "bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold transition duration-200 ease-in-out";
   const publishButtonClass = `${darkGreenClass} ${darkGreenHoverClass} text-white px-6 py-2 rounded-lg font-semibold ml-auto transition duration-200 ease-in-out tracking-wide`;
+
+  const publicar = () => {
+    const imgs = (formData.imagenes || '')
+      .split(/\n|,/)
+      .map((s) => s.trim())
+      .filter(Boolean)
+    const project = {
+      id: `${(formData.nombre || 'proyecto').toLowerCase().replace(/[^a-z0-9]+/gi, '-')}-${Date.now()}`,
+      title: formData.nombre || 'Proyecto',
+      description: formData.descripcion || '',
+      cover: imgs[0] || '',
+      category: formData.rubro || 'General',
+      images: imgs,
+    }
+    try {
+      const raw = localStorage.getItem('projects')
+      const list = raw ? JSON.parse(raw) : []
+      list.unshift(project)
+      localStorage.setItem('projects', JSON.stringify(list))
+    } catch {}
+    alert('¡Emprendimiento Publicado!')
+    navigate('/')
+  }
+
+  useEffect(() => {
+    const buttons = Array.from(document.querySelectorAll('button')) as HTMLButtonElement[]
+    const target = buttons.find((b) => b.textContent?.trim() === 'Publicar Emprendimiento')
+    if (!target) return
+    const onClick = (e: Event) => {
+      e.preventDefault()
+      publicar()
+    }
+    target.addEventListener('click', onClick)
+    return () => target.removeEventListener('click', onClick)
+  }, [])
+
+  ;(function attachPublishHandler() {
+    try {
+      const btns = document.querySelectorAll('button')
+      btns.forEach((b) => {
+        if (b.textContent && b.textContent.trim() === 'Publicar Emprendimiento') {
+          b.onclick = (e) => {
+            e.preventDefault()
+            publicar()
+          }
+        }
+      })
+    } catch {}
+  })()
 
   return (
     <div className="flex justify-center mt-10 p-4">
@@ -170,7 +219,6 @@ export default function EmprendimientoForm() {
         </h2>
 
         <form onSubmit={(e) => e.preventDefault()}>
-          {/* FASE 1 */}
           {fase === 1 && (
             <div className="space-y-6 animate-fadeIn">
               <input
@@ -208,7 +256,6 @@ export default function EmprendimientoForm() {
             </div>
           )}
 
-          {/* FASE 2 */}
           {fase === 2 && (
             <div className="space-y-6 animate-fadeIn">
               <textarea
@@ -242,7 +289,6 @@ export default function EmprendimientoForm() {
             </div>
           )}
 
-          {/* FASE 3 */}
           {fase === 3 && (
             <div className="space-y-6 animate-fadeIn">
               <input
@@ -289,7 +335,6 @@ export default function EmprendimientoForm() {
             </div>
           )}
 
-          {/* FASE 4 */}
           {fase === 4 && (
             <div className="space-y-6 animate-fadeIn">
               <p className="text-gray-600 italic border-l-4 border-slate-300 pl-3 py-1 bg-gray-50">
@@ -314,10 +359,20 @@ export default function EmprendimientoForm() {
                 placeholder="Actualizaciones, hitos logrados o reportes recientes (opcional)"
                 className={`${inputClasses} h-24 resize-none`}
               />
+              <div className="pt-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Imágenes del proyecto (URLs)</label>
+                <textarea
+                  name="imagenes"
+                  value={formData.imagenes}
+                  onChange={handleChange}
+                  placeholder="Pega una o más URLs de imágenes, separadas por línea o coma"
+                  className={`${inputClasses} h-24 resize-none`}
+                />
+                <p className="mt-1 text-xs text-gray-500">Estas imágenes aparecerán en el detalle como carrusel.</p>
+              </div>
             </div>
           )}
 
-          {/* FASE 5 */}
           {fase === 5 && (
             <div className="space-y-6 animate-fadeIn">
               <input

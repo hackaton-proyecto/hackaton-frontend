@@ -215,7 +215,6 @@ export default function FinancialOverview() {
                    
                     <div className="flex flex-col gap-8 lg:w-2/3">
                         
-                        {/* Fondos Recibidos Card */}
                         <div className="bg-white rounded-xl p-8 border border-gray-200 shadow-lg">
                             <h2 className="text-xl font-bold text-gray-700 mb-6">Fondos Recibidos (ARS)</h2>
                             <div className="mb-4">
