@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { navigate } from '../router'
+import logo from '../assets/images/D-Photoroom.png'
 
 export function Navbar() {
   const { user, logout } = useAuth()
   const [open, setOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement | null>(null)
 
-  
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -21,31 +21,23 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/90 backdrop-blur-lg">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-        {/* Sección Izquierda: Logo y Navegación Principal */}
+
         <div className="flex items-center gap-x-6">
           <button
             onClick={() => navigate('/home')}
-            aria-label="Go to home"
-            className="flex items-center gap-2 text-lg font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded"
+            aria-label="Ir al inicio"
+            
+            className="flex items-center gap-3 text-xl font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded"
           >
-            {/* Logo SVG */}
-            <svg
-              className="h-7 w-7 text-indigo-600"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M3 12l3-3 3 3-3 3-3-3z" />
-              <path d="M12 12l3-3 3 3-3 3-3-3z" />
-              <path d="M21 12l-3-3-3 3 3 3 3-3z" />
-            </svg>
-            camelCase
-          </button>
+            <img
+              src={logo}
+              alt="Logo camelCase"
           
-          {/* Enlaces para usuarios autenticados */}
+              className="h-24 w-auto object-contain"
+            />
+            <span className="font-semibold text-slate-900">Capital</span>
+          </button>
+
           {user && (
             <div className="hidden items-center gap-x-4 md:flex">
               <button
@@ -108,7 +100,7 @@ export function Navbar() {
                   title={user.email}
                 >
                   <img
-                    src={`https://i.pravatar.cc/150?u=${user.email}`} 
+                    src={`https://i.pravatar.cc/150?u=${user.email}`}
                     alt="Avatar"
                     className="h-full w-full object-cover"
                   />
@@ -143,7 +135,7 @@ export function Navbar() {
                       onClick={() => {
                         setOpen(false)
                         logout()
-                        navigate('/home')
+                        navigate('/')
                       }}
                     >
                       Cerrar sesión
