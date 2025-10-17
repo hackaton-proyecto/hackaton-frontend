@@ -7,6 +7,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { Card, Text, Metric, Badge } from "@tremor/react";
 import { useAuth } from "../context/AuthContext";
 import { navigate } from "../router";
+import { Footer } from "../components/Footer";
+import { Navbar } from "../components/Navbar";
 
 function getQueryParam(name: string): string | null {
   const hash = window.location.hash || "";
@@ -56,46 +58,54 @@ export function ProjectDetail() {
 
   if (!item) {
     return (
-      <Container className="py-16">
-        <h1 className="text-2xl font-semibold text-gray-900">Proyecto no encontrado</h1>
-        <p className="mt-4 text-gray-600">El proyecto solicitado no existe o fue removido.</p>
-      </Container>
+      <>
+        <Navbar />
+        <Container className="py-16">
+          <h1 className="text-2xl font-semibold text-gray-900">Proyecto no encontrado</h1>
+          <p className="mt-4 text-gray-600">El proyecto solicitado no existe o fue removido.</p>
+        </Container>
+        <Footer />
+      </>
     );
   }
 
   return (
-    <section className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-white to-indigo-50" />
-      <Container className="py-12 sm:py-16">
-        <div className="mx-auto max-w-6xl">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            {(item as any).title || "Proyecto"}
-          </h1>
-          <div className="mt-6 grid gap-6 lg:grid-cols-12">
-            <div className="lg:col-span-8">
-              <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow">
-                {images.length > 0 && <SteamCarousel images={images} />}
-                {images.length === 0 && (
-                  <div className="flex h-60 w-full items-center justify-center bg-gray-100 text-gray-500">
-                    Sin imágenes
+    <>
+      <Navbar />
+      <section className="relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-white to-indigo-50" />
+        <Container className="py-12 sm:py-16">
+          <div className="mx-auto max-w-6xl">
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              {(item as any).title || "Proyecto"}
+            </h1>
+            <div className="mt-6 grid gap-6 lg:grid-cols-12">
+              <div className="lg:col-span-8">
+                <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow">
+                  {images.length > 0 && <SteamCarousel images={images} />}
+                  {images.length === 0 && (
+                    <div className="flex h-60 w-full items-center justify-center bg-gray-100 text-gray-500">
+                      Sin imágenes
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <p className="leading-7 text-gray-700">{(item as any).description || ""}</p>
                   </div>
-                )}
-                <div className="p-6">
-                  <p className="leading-7 text-gray-700">{(item as any).description || ""}</p>
+                </div>
+              </div>
+
+              <div className="lg:col-span-4">
+                <InvestmentCard projectId={id} />
+                <div className="mt-6">
+                  <InvestorsCard projectId={id} />
                 </div>
               </div>
             </div>
-
-            <div className="lg:col-span-4">
-              <InvestmentCard projectId={id} />
-              <div className="mt-6">
-                <InvestorsCard projectId={id} />
-              </div>
-            </div>
           </div>
-        </div>
-      </Container>
-    </section>
+        </Container>
+      </section>
+      <Footer />
+    </>
   );
 }
 
@@ -161,7 +171,6 @@ export function InvestmentCard({ projectId }: { projectId: string }) {
         </div>
       </div>
 
-      {/* CTA */}
       <button
         className="mt-6 w-full rounded-lg bg-[oklch(27.9%_0.041_260.031)] px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-[oklch(32%_0.045_260.031)] active:scale-[0.99]"
         onClick={() => alert("Función de invertir - demo")}
@@ -174,11 +183,11 @@ export function InvestmentCard({ projectId }: { projectId: string }) {
 
 function InvestorsCard({ projectId }: { projectId: string }) {
   const data: Record<string, { investors: number; target: number }> = {
-    'ultra-vertigo': { investors: 128, target: 300 },
-    'neon-run': { investors: 94, target: 220 },
-    'tower-dash': { investors: 153, target: 250 },
-  }
-  const { investors, target } = data[projectId] || { investors: 42, target: 150 }
+    "ultra-vertigo": { investors: 128, target: 300 },
+    "neon-run": { investors: 94, target: 220 },
+    "tower-dash": { investors: 153, target: 250 },
+  };
+  const { investors, target } = data[projectId] || { investors: 42, target: 150 };
 
   return (
     <Card className="relative overflow-hidden rounded-2xl border border-indigo-100 bg-white/90 shadow-lg">
@@ -196,38 +205,36 @@ function InvestorsCard({ projectId }: { projectId: string }) {
       </div>
 
       <div className="mt-2">
-        <Metric className="leading-tight">{investors.toLocaleString('es-AR')}</Metric>
+        <Metric className="leading-tight">{investors.toLocaleString("es-AR")}</Metric>
         <Text className="text-gray-600">participantes</Text>
       </div>
 
       <div className="mt-4 text-sm text-gray-600">
         <Text>
-          Objetivo: <span className="font-semibold">{target.toLocaleString('es-AR')}</span>
+          Objetivo: <span className="font-semibold">{target.toLocaleString("es-AR")}</span>
         </Text>
         <Text className="mt-1">
-          Faltan <span className="font-medium">{Math.max(0, target - investors).toLocaleString('es-AR')}</span> inversores para alcanzar el objetivo
+          Faltan <span className="font-medium">{Math.max(0, target - investors).toLocaleString("es-AR")}</span> inversores para alcanzar el objetivo
         </Text>
       </div>
-      
-      {/* --- CÓDIGO MODIFICADO --- */}
+
       <button
         className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-[oklch(27.9%_0.041_260.031)] px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-[oklch(32%_0.045_260.031)] active:scale-[0.99]"
         onClick={() => navigate(`/chat?projectId=${projectId}`)}
       >
-        <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 24 24" 
-            fill="currentColor" 
-            className="w-5 h-5"
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="w-5 h-5"
         >
-            <path d="M4.913 2.658c.242-.192.54-.298.858-.298h12.458c.318 0 .616.106.858.298l-7.087 5.67a1.5 1.5 0 01-1.718 0L4.913 2.658z" />
-            <path d="M3 6.004v10.493A2.25 2.25 0 005.25 18.75h13.5A2.25 2.25 0 0021 16.497V6.004L13.587 12.2a3 3 0 01-3.174 0L3 6.004z" />
+          <path d="M4.913 2.658c.242-.192.54-.298.858-.298h12.458c.318 0 .616.106.858.298l-7.087 5.67a1.5 1.5 0 01-1.718 0L4.913 2.658z" />
+          <path d="M3 6.004v10.493A2.25 2.25 0 005.25 18.75h13.5A2.25 2.25 0 0021 16.497V6.004L13.587 12.2a3 3 0 01-3.174 0L3 6.004z" />
         </svg>
         <span>Chatear con el emprendedor</span>
       </button>
-
     </Card>
-  )
+  );
 }
 
 function SteamCarousel({ images }: { images: string[] }) {

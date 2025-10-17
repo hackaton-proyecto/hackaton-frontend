@@ -10,6 +10,7 @@ import AdminEmpre from './pages/AdminEmpre'
 import Chat from './pages/ChatEmpre'
 import ListaChats from './pages/ListaChats'
 import LandingPage from './pages/LandingPage'
+import { Dashboard } from './pages/Deshboard'
 
 type RouteConfig = {
   path: string
@@ -27,7 +28,7 @@ const routes: RouteConfig[] = [
   { path: '/chat', element: <Chat /> },
   { path: '/chatlist', element: <ListaChats /> },
   { path: '/', element: <LandingPage /> },
-
+  { path: '/dashboard', element: <Dashboard /> },
 ]
 
 function getHashPath() {
